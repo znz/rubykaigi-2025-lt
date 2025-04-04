@@ -1,0 +1,24 @@
+---
+id: rubykaigi-2025-lt
+base_name: riscv64.rubyci.org_internal
+tags:
+- ruby
+presentation_date: '2025-04-17'
+presentation_start_time:
+presentation_end_time:
+version: 2025.4.17.0
+licenses: []
+slideshare_id:
+speaker_deck_id:
+vimeo_id:
+youtube_id:
+width: 1920
+height: 1200
+source_code_uri:
+author:
+  markup_language: :markdown
+  name: Kazuhiro NISHIYAMA
+  email: zn@mbf.nifty.com
+  rubygems_user: znz
+  slideshare_user: znzjp
+  speaker_deck_user: znz
