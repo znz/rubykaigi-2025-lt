@@ -1,6 +1,6 @@
 # riscv64.rubyci.org internal
 
-TODO: スライドの説明
+RubyKaigi 2025 の LT の発表資料です。
 
 ## 作者向け
 
@@ -21,4 +21,3 @@ TODO: スライドの説明
 ### 表示
 
     rabbit rabbit-slide-znz-rubykaigi-2025-lt.gem
-
