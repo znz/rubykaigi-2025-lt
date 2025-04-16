@@ -30,7 +30,7 @@ theme
 
 ## note
 
-まず、rubyci.org とは、CIの結果のまとめサイトです。
+まず、rubyci.org とは、いろんな環境で実行しているRubyのCIの結果のまとめサイトです。
 各 CI 環境で chkbuild を実行しています。
 ほとんどの環境では現在サポートされている ruby の全バージョンを実行しています。
 いくつかの環境ではマスターブランチのみ実行しています。
@@ -43,12 +43,14 @@ theme
 - When I took over the riscv64 VM,
   there was an environment created by mame-san,
   but it was slightly outdated.
+- I present one of some ways here.
 
 ## note
 
-risc 環境のメンテナンスをしている理由は、マイナーな環境でテストを実行するとバグがみつかるかもしれないからです。
+次に、なぜ私が risc 環境のメンテナンスをしているかと言うと、マイナーな環境でテストを実行するとバグがみつかるかもしれないからです。
 最近は qemu で実行しやすくなっているのも理由のひとつです。
 まめさんが作成した環境がすでにあったのですが、少し古くなっていたので引き継いでメンテナンスしています。
+いくつか工夫が必要だったので、そのうちのひとつを紹介します。
 
 # Premise
 
@@ -77,7 +79,7 @@ To avoid wasting time by interrupting CI due to reboots, I devised a way to rebo
 ## note
 
 パッケージの更新後に再起動が必要になると `unattended-upgrade` が `/run/reboot-required` を作成します。
-`chkbuild` の実行の合間にメンテナンス時間をとっていて、必要ならそこで再起動します。
+`chkbuild` の実行の合間にメンテナンス時間をとっていて、必要ならそこで再起動するようにしました。
 
 # Guest VM and Host OS
 
@@ -86,7 +88,7 @@ To avoid wasting time by interrupting CI due to reboots, I devised a way to rebo
 
 ## note
 
-これでゲストVM自体の再起動は簡単に待てるかもしれませんが、
+これでゲストVM自体の再起動は簡単に待てるようになりましたが、
 ホストOSの再起動も待つ必要があります。
 
 # How to wait?
@@ -98,13 +100,15 @@ To avoid wasting time by interrupting CI due to reboots, I devised a way to rebo
 - Pros:
   - Loose coupling between components.
   - The notifier requires fewer privileges.
+  - Usually no maintenance required
 
 ## note
 
-そこで、共有ディレクトリを使って待つようにしました。
-具体的にはchkbuildが終わったときに、特定のファイルの更新時刻を更新して、
+そこで、共有ディレクトリを使って通知するようにしました。
+具体的にはchkbuildが終わったときに、特定のファイルの mtime を更新して、
 systemd の path unit で検出して、必要なら再起動します。
-この方法は、疎結合にできるのと、通知側の権限を少なくできる、というのが利点です。
+この方法の利点は、疎結合にできるのと、通知側の権限を少なくできる、というところです。
+そして、普段はメンテナンス不要にできました。
 
 # Are you interested?
 
@@ -112,14 +116,16 @@ systemd の path unit で検出して、必要なら再起動します。
   - Set up your own CI environment to run chkbuild.
     - Use `start-rubyci` in `ruby/chkbuild`.
   - Add your results to `rubyci.org`.
-    - Contact the `rubyci.org` maintainer to add your chkbuild output URLs.
+    - Contact the `rubyci.org` maintainers to add your chkbuild output URLs.
+  - If tests failed, fix, report, or do something else.
 
 ## note
 
-こんな感じで、好きな環境でのrubyをもっとサポートしたいと思ったら、
+こんな感じで、まだあまりテストされていない環境でのrubyをもっとサポートしたいと思ったら、
 chkbuild を動かす環境をととのえて、 rubyci.org に追加してもらうと良いでしょう。
+そして、テストが失敗したら、何か対処してください。
 
-# Self-introduction
+# self.introduction
 
 - Kazuhiro NISHIYAMA
 - One of the Ruby Committers
