@@ -22,11 +22,11 @@ theme
 
 - *CI* results summary site
   - <https://rubyci.org/>
-- Run *chkbuild* on each CI environments
+- Runs *chkbuild* on various CI environments
   - <https://github.com/ruby/chkbuild>
-- Most environments run on *all* supported ruby versions
-- Some environments run on *master branch only*
-  - jit variants, android, *riscv64*
+- Most environments run *all* supported Ruby versions
+- Some environments run *only on the master branch*
+  - JIT variants, Android, *riscv64*
 
 ## note
 
@@ -35,14 +35,14 @@ theme
 ほとんどの環境では現在サポートされている ruby の全バージョンを実行しています。
 いくつかの環境ではマスターブランチのみ実行しています。
 
-# Why do I maintain riscv64 VM?
+# Why do I maintain the riscv64 VM?
 
-- I am interested in *minor environments*, and run tests on them.
-  - It may find interesting bugs.
-- `qemu-system-riscv64` is easy to run lately.
+- I am interested in *minor environments* and run tests on them.
+  - They may uncover interesting bugs.
+- `qemu-system-riscv64` has become easier to use recently.
 - When I took over the riscv64 VM,
   there was an environment created by mame-san,
-  but it was a bit out of date.
+  but it was slightly outdated.
 
 ## note
 
@@ -52,12 +52,12 @@ risc 環境のメンテナンスをしている理由は、マイナーな環境
 
 # Premise
 
-- `qemu-system-riscv64` runs on host environments, and *very slow*.
-  - CPU emulation using qemu-system takes longer than running on a real machine.
-- So it runs *master branch only*.
-- Nevertheless it can *take hours*.
+- `qemu-system-riscv64` runs on host environments and is *very slow*.
+  - CPU emulation with qemu-system takes much longer than running on real hardware.
+- Therefore, it runs *only on the master branch*.
+- Even so, it can take *hours*.
 
-As a result, rebooting normally would *interrupt CI*, which would be *a huge waste*, so I devised a way to reboot between CI runs.
+To avoid wasting time by interrupting CI due to reboots, I devised a way to reboot between CI runs.
 
 ## note
 
@@ -66,13 +66,13 @@ As a result, rebooting normally would *interrupt CI*, which would be *a huge was
 
 そのため、再起動で CI が中断すると非常に無駄が大きいので、CI の実行の合間に再起動するように工夫しました。
 
-# How to run without interrupt
+# How to run without interruption
 
-- `unattended-upgrade` sometimes requires reboot
+- `unattended-upgrade` sometimes requires a reboot
   after upgrading packages.
   - It creates `/run/reboot-required`.
-- I take an hour to maintain between running chkbuild.
-  - Machine reboots on that time if required.
+- I allocate an hour for maintenance between chkbuild runs.
+  - The machine reboots during this time if necessary.
 
 ## note
 
@@ -81,8 +81,8 @@ As a result, rebooting normally would *interrupt CI*, which would be *a huge was
 
 # Guest VM and Host OS
 
-- It may easily wait for the guest VM to reboot itself.
-- It should wait for rebooting the host OS too.
+- It is relatively easy to wait for the guest VM to reboot itself.
+- However, the host OS also needs to handle reboots.
 
 ## note
 
@@ -92,12 +92,12 @@ As a result, rebooting normally would *interrupt CI*, which would be *a huge was
 # How to wait?
 
 - They cooperate using a shared directory.
-  - Update `mtime` of the specific file in it after chkbuild finished.
-  - My own systemd path unit detects changing `mtime`,
-    and reboot if required on both guest and host.
-- Pros
-  - They can be loose coupling.
-  - Notifier has less privileges.
+  - After chkbuild finishes, it updates the `mtime` of a specific file in the shared directory.
+  - A custom systemd path unit detects the `mtime` change
+    and reboots both the guest and host if necessary.
+- Pros:
+  - Loose coupling between components.
+  - The notifier requires fewer privileges.
 
 ## note
 
@@ -106,24 +106,24 @@ As a result, rebooting normally would *interrupt CI*, which would be *a huge was
 systemd の path unit で検出して、必要なら再起動します。
 この方法は、疎結合にできるのと、通知側の権限を少なくできる、というのが利点です。
 
-# Do you interested?
+# Are you interested?
 
-- If you want ruby to support your favorite environments more,
-  - you can maintain your own CI environment to run chkbuild
-    - Run `start-rubyci` in `ruby/chkbuild`
-  - and add results to `rubyci.org`
-	- Contact to `rubyci.org` maintainer to add URLs of your chkbuild output
+- If you want Ruby to support your favorite environments better:
+  - Set up your own CI environment to run chkbuild.
+    - Use `start-rubyci` in `ruby/chkbuild`.
+  - Add your results to `rubyci.org`.
+    - Contact the `rubyci.org` maintainer to add your chkbuild output URLs.
 
 ## note
 
 こんな感じで、好きな環境でのrubyをもっとサポートしたいと思ったら、
 chkbuild を動かす環境をととのえて、 rubyci.org に追加してもらうと良いでしょう。
 
-# self.introduction
+# Self-introduction
 
 - Kazuhiro NISHIYAMA
 - One of the Ruby Committers
-- github, etc.: `@znz`
+- GitHub, etc.: `@znz`
 - 株式会社Ruby開発 www.ruby-dev.jp
   - We are hiring!
 
