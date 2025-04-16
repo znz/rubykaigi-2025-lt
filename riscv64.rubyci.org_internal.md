@@ -20,13 +20,13 @@ theme
 
 # What's rubyci.org?
 
-- *CI* results summary site
+- A *CI* results summary site
   - <https://rubyci.org/>
 - Runs *chkbuild* on various CI environments
   - <https://github.com/ruby/chkbuild>
-- Most environments run *all* supported Ruby versions
-- Some environments run *only on the master branch*
-  - JIT variants, Android, *riscv64*
+- Most environments run *all* supported Ruby versions.
+- Some environments run *only on the master branch*.
+  - JIT variants, Android, *riscv64*.
 
 ## note
 
@@ -37,13 +37,12 @@ theme
 
 # Why do I maintain the riscv64 VM?
 
-- I am interested in *minor environments* and run tests on them.
-  - They may uncover interesting bugs.
-- `qemu-system-riscv64` has become easier to use recently.
-- When I took over the riscv64 VM,
+- I am interested in *minor environments* and run tests on them. They may uncover interesting bugs.
+- *`qemu-system-riscv64`* has become easier to use recently.
+- When I took over *the riscv64 VM*,
   there was an environment created by mame-san,
   but it was slightly outdated.
-- I present one of some ways here.
+- I made *some improvements* and will share *one of them* here.
 
 ## note
 
@@ -57,7 +56,7 @@ theme
 - `qemu-system-riscv64` runs on host environments and is *very slow*.
   - CPU emulation with qemu-system takes much longer than running on real hardware.
 - Therefore, it runs *only on the master branch*.
-- Even so, it can take *hours*.
+- Even so, it can take *hours* (e.g., 7 hours).
 
 To avoid wasting time by interrupting CI due to reboots, I devised a way to reboot between CI runs.
 
@@ -93,14 +92,14 @@ To avoid wasting time by interrupting CI due to reboots, I devised a way to rebo
 
 # How to wait?
 
-- They cooperate using a shared directory.
+- The guest and host cooperate using a shared directory.
   - After chkbuild finishes, it updates the `mtime` of a specific file in the shared directory.
   - A custom systemd path unit detects the `mtime` change
     and reboots both the guest and host if necessary.
 - Pros:
   - Loose coupling between components.
   - The notifier requires fewer privileges.
-  - Usually no maintenance required
+  - Usually no maintenance is required.
 
 ## note
 
@@ -117,7 +116,7 @@ systemd の path unit で検出して、必要なら再起動します。
     - Use `start-rubyci` in `ruby/chkbuild`.
   - Add your results to `rubyci.org`.
     - Contact the `rubyci.org` maintainers to add your chkbuild output URLs.
-  - If tests failed, fix, report, or do something else.
+  - If tests fail, fix them, report issues, or take other actions.
 
 ## note
 
