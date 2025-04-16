@@ -78,7 +78,7 @@ To avoid wasting time by interrupting CI due to reboots, I devised a way to rebo
 ## note
 
 パッケージの更新後に再起動が必要になると `unattended-upgrade` が `/run/reboot-required` を作成します。
-`chkbuild` の実行の合間にメンテナンス時間をとっていて、必要ならそこで再起動するようにしました。
+`chkbuild` の実行の合間にメンテナンス時間をとっていて、ファイルの存在をチェックして、必要ならそこで再起動するようにしました。
 
 # Guest VM and Host OS
 
