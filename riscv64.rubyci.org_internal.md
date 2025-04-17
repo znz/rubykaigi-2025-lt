@@ -35,6 +35,14 @@ theme
 ほとんどの環境では現在サポートされている ruby の全バージョンを実行しています。
 いくつかの環境ではマスターブランチのみ実行しています。
 
+# rubyci.org
+
+![](rubyci.png){:relative_height='100'}
+
+## note
+
+実際の rubyci.org はこんな感じで、私がメンテナンスしている risc 環境は最新の revision で実行できていないので、ちょっと薄くなっている行になります。
+
 # Why do I maintain the riscv64 VM?
 
 - I am interested in *minor environments* and run tests on them. They may uncover interesting bugs.
@@ -138,3 +146,7 @@ chkbuild を動かす環境をととのえて、 rubyci.org に追加しても�
 Ruby コミッターのひとりで、github などはゼットエヌゼットというアカウントで活動しています。
 株式会社Ruby開発に所属しています。採用強化中なので興味があればよろしくお願いします。
 以上で発表を終わります。
+
+# 株式会社Ruby開発
+
+![](img_2730.jpg){:relative_height='100'}
